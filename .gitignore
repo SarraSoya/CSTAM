@@ -1,0 +1,22 @@
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+# Keep root lockfile, ignore nested ones
+infra/**/.terraform.lock.hcl
+
+# Python
+__pycache__/
+*.pyc
+
+# OS / misc
+.DS_Store
+*.log
+
+# Env
+.env
