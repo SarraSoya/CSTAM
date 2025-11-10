@@ -97,7 +97,7 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
-    command: ["redis-server", "--appendonly", "yes", "--requirepass", "SuperSecret123"]
+    command: [ "redis-server", "--appendonly", "yes", "--requirepass", "SuperSecret123" ]
     networks:
       - kafka-net
 
@@ -107,7 +107,7 @@ services:
     environment:
       - REDIS_HOSTS=local:redis:6379:0:SuperSecret123
     ports:
-      - "8082:8081"   # évite conflit avec mongo-express
+      - "8082:8081" # évite conflit avec mongo-express
     depends_on:
       - redis
     networks:
@@ -143,6 +143,27 @@ services:
     networks:
       - kafka-net
 
+  spark-notebook:
+    build: ./spark-notebook.dockerfile
+    image: spark-notebook
+    container_name: spark-notebook
+    user: root
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./spark/:/opt/spark-jobs
+    working_dir: /opt/spark-jobs
+    command: >
+      jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+    networks:
+      - kafka-net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/lab" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
 # -------------------- Volumes -------------------------
 volumes:
   grafana-storage: {}
@@ -150,6 +171,6 @@ volumes:
   redis_data:
   mongo_data:
 
-# -------------------- Networks -------------------------
+    # -------------------- Networks -------------------------
 networks:
   kafka-net:

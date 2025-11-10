@@ -1,7 +1,7 @@
 import requests
 import time
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 import logging
 
 # Configure logging
@@ -118,20 +118,23 @@ def simulate_realtime_stream():
                     row = hr_df.iloc[hr_idx]
                     data = {
                         "user_id": str(row["user_id"]),
-                        "time": row["time"].isoformat(),
+                        "time": datetime.now(
+                            timezone.utc
+                        ).isoformat(),  # <-- updated line
                         "heart_rate": int(row["heart_rate"]),
                     }
                     send_data_to_api(session, "/ingest/heartrate", data, token)
                     hr_idx += 1
                     last_hr_time = current_time
 
-                # Check if it's time to send steps and calories (every minute)
                 if (current_time - last_minute_data_time).total_seconds() >= 60:
                     if cal_idx < total_cal_rows:
                         cal_row = cal_df.iloc[cal_idx]
                         data = {
                             "user_id": str(cal_row["user_id"]),
-                            "time": cal_row["time"].isoformat(),
+                            "time": datetime.now(
+                                timezone.utc
+                            ).isoformat(),  # <-- updated line
                             "calories": float(cal_row["calories"]),
                         }
                         send_data_to_api(session, "/ingest/calories", data, token)
@@ -141,7 +144,9 @@ def simulate_realtime_stream():
                         steps_row = steps_df.iloc[steps_idx]
                         data = {
                             "user_id": str(steps_row["user_id"]),
-                            "time": steps_row["time"].isoformat(),
+                            "time": datetime.now(
+                                timezone.utc
+                            ).isoformat(),  # <-- updated line
                             "steps": int(steps_row["steps"]),
                         }
                         send_data_to_api(session, "/ingest/steps", data, token)
