@@ -2,5 +2,5 @@ data/
 mongo_data/
 opt/
 spark/cstam2-1f2ec-firebase-adminsdk-fbsvc-2ab61a7ed6.json
-ipynb_checkpoints/
+.ipynb_checkpoints/
 .virtual_documents/
