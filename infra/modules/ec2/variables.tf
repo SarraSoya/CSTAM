@@ -1,9 +1,0 @@
-variable "vpc_id" { type = string }
-variable "private_subnet_id" { type = string }
-variable "ami_id" { type = string }
-variable "instance_type" { type = string }
-variable "key_name" { type = string }
-variable "environment" { type = string }
-variable "iam_instance_profile_name" { type = string }
-variable "s3_bucket_name" { type = string }
-variable "bootstrap_brokers_tls" { type = string }
